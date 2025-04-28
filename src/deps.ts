@@ -1,0 +1,43 @@
+import { AuthGuard } from './auth/authGuard';
+import { BcryptHasher } from './auth/authHasher';
+import { AuthService } from './auth/authService';
+import { InMemoryAuthSessionStore } from './auth/authSessionStore';
+import { loadAppConfig } from './config';
+import { DBProvider } from './db/provider';
+import { ConsoleLogger } from './logger';
+import { SqlUsersRepository } from './users/usersRepository';
+
+export function createApplicationContainer() {
+  const config = loadAppConfig();
+  const logger = new ConsoleLogger();
+
+  const dbProvider = new DBProvider(config);
+
+  const usersRepository = new SqlUsersRepository(dbProvider);
+
+  const authHasher = new BcryptHasher(12);
+  const authSessionStore = new InMemoryAuthSessionStore();
+
+  const authService = new AuthService(
+    authHasher,
+    authSessionStore,
+    usersRepository,
+    logger
+  );
+  const authGuard = new AuthGuard(authSessionStore, usersRepository);
+
+  return {
+    config,
+    logger,
+    dbProvider,
+    usersRepository,
+    authHasher,
+    authSessionStore,
+    authService,
+    authGuard,
+  };
+}
+
+export type ApplicationContainer = ReturnType<
+  typeof createApplicationContainer
+>;
