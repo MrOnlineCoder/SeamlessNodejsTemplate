@@ -1,6 +1,7 @@
 import { AppConfig, loadAppConfig } from '../src/config';
 import { Logger } from '../src/logger';
-import { MailerProvider } from '../src/mailer/mailer.provider';
+import { MailerProvider } from '../src/mailer/mailerProvider';
+import { MailerService } from '../src/mailer/mailerService';
 
 export const mockLogger: Logger = {
   error(tag: string, message: string, meta?: any) {},
@@ -13,17 +14,8 @@ export const mockMailerProvider: MailerProvider = {
   },
 };
 
-export const mockConfig: AppConfig = {
-  port: 3000,
-  dbUrl: 'postgres://localhost:5432/mydb',
-  swaggerUi: true,
-  mailer: {
-    from: 'ava@test.com',
-    host: 'localhost',
-    pass: 'password',
-    port: 587,
-    secure: false,
-    user: 'user',
+export const mockMailerService: MailerService = {
+  sendMail: async (params) => {
+    return 'mocked-message-id';
   },
-  resourcesFolder: 'resources',
 };

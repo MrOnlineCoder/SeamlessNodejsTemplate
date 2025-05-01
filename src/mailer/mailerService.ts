@@ -1,6 +1,6 @@
 import { Eta } from 'eta';
 import { AppConfig } from '../config';
-import { MailerProvider, MailerSendParams } from './mailer.provider';
+import { MailerProvider, MailerSendParams } from './mailerProvider';
 
 import path from 'node:path';
 import inlineCss from 'inline-css';
@@ -18,7 +18,11 @@ export interface SendTemplateMailOptions {
   payload: Record<string, any>;
 }
 
-export class MailerService {
+export interface MailerService {
+  sendMail(params: SendTemplateMailOptions): Promise<string | null>;
+}
+
+export class EtaTemplatedMailerService implements MailerService {
   private renderer: Eta;
 
   constructor(

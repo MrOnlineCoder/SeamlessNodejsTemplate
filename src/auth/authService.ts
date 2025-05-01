@@ -1,7 +1,7 @@
 import { AppError, ErrorCode } from '../errors';
 import { Logger } from '../logger';
-import { MailerProvider } from '../mailer/mailer.provider';
-import { MailerService, MailerTemplateType } from '../mailer/mailer.service';
+import { MailerProvider } from '../mailer/mailerProvider';
+import { MailerService, MailerTemplateType } from '../mailer/mailerService';
 import { User } from '../users/userEntity';
 import { UsersRepository } from '../users/usersRepository';
 import { makeEntityId } from '../utils/id';

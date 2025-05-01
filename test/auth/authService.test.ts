@@ -3,15 +3,15 @@ import { AuthService } from '../../src/auth/authService';
 import { AuthHasher } from '../../src/auth/authHasher';
 import { mockAuthHasher, mockAuthSessionStore } from './authMisc';
 import { createMockUserRepo } from '../users/usersMisc';
-import { mockConfig, mockLogger, mockMailerProvider } from '../misc';
-import { MailerService } from '../../src/mailer/mailer.service';
+import { mockLogger, mockMailerService } from '../misc';
+import { MailerService } from '../../src/mailer/mailerService';
 
 test('password strength check is correct', (t) => {
   const service = new AuthService(
     mockAuthHasher,
     mockAuthSessionStore,
     createMockUserRepo([]),
-    new MailerService(mockMailerProvider, mockLogger, mockConfig),
+    mockMailerService,
     mockLogger
   );
 
