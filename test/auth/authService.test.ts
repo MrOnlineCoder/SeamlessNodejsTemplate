@@ -2,14 +2,16 @@ import test from 'ava';
 import { AuthService } from '../../src/auth/authService';
 import { AuthHasher } from '../../src/auth/authHasher';
 import { mockAuthHasher, mockAuthSessionStore } from './authMisc';
-import { mockUserRepository } from '../users/usersMisc';
-import { mockLogger } from '../misc';
+import { createMockUserRepo } from '../users/usersMisc';
+import { mockConfig, mockLogger, mockMailerProvider } from '../misc';
+import { MailerService } from '../../src/mailer/mailer.service';
 
 test('password strength check is correct', (t) => {
   const service = new AuthService(
     mockAuthHasher,
     mockAuthSessionStore,
-    mockUserRepository,
+    createMockUserRepo([]),
+    new MailerService(mockMailerProvider, mockLogger, mockConfig),
     mockLogger
   );
 

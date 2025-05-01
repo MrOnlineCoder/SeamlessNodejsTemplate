@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/src/index.js",
     "build": "tsc",
-    "test": "ava",
+    "test": "ava build/test/**/*.test.js",
     "db:generate": "drizzle-kit generate"
   },
   "author": "Your Name Here",
@@ -14,7 +14,9 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/dotenv-safe": "^8.1.6",
+    "@types/inline-css": "^3.0.3",
     "@types/node": "^22.15.2",
+    "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.11.14",
     "ava": "^6.2.0",
     "drizzle-kit": "^0.31.0",
@@ -31,7 +33,10 @@
     "dayjs": "^1.11.13",
     "dotenv-safe": "^9.1.0",
     "drizzle-orm": "^0.43.1",
+    "eta": "^3.5.0",
     "fastify": "^5.3.2",
+    "inline-css": "^4.0.3",
+    "nodemailer": "^6.10.1",
     "pg": "^8.15.6"
   }
 }

@@ -35,7 +35,10 @@ export async function startWebServer(app: ApplicationContainer) {
   });
   await server.register(fastifyRateLimit, {
     errorResponseBuilder: (req, context) => {
-      throw new AppError(ErrorCode.TOO_MANY_REQUESTS, `Too many requests`);
+      throw new AppError(
+        ErrorCode.TOO_MANY_REQUESTS,
+        `Too many requests, please try again later`
+      );
     },
   });
   await server.register(fastifyCookie);

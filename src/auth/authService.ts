@@ -1,5 +1,7 @@
 import { AppError, ErrorCode } from '../errors';
 import { Logger } from '../logger';
+import { MailerProvider } from '../mailer/mailer.provider';
+import { MailerService, MailerTemplateType } from '../mailer/mailer.service';
 import { User } from '../users/userEntity';
 import { UsersRepository } from '../users/usersRepository';
 import { makeEntityId } from '../utils/id';
@@ -27,6 +29,7 @@ export class AuthService {
     private readonly authHasher: AuthHasher,
     private readonly authSessionStore: AuthSessionStore,
     private readonly userRepository: UsersRepository,
+    private readonly mailerService: MailerService,
     private readonly logger: Logger
   ) {}
 
@@ -107,6 +110,17 @@ export class AuthService {
     };
 
     await this.userRepository.create(newUser);
+
+    //TEMPLATE: this is an example of sending a welcome email
+    //You may add an email verification step here
+    await this.mailerService.sendMail({
+      payload: {
+        email: newUser.email,
+      },
+      subject: 'Welcome to our service',
+      to: newUser.email,
+      type: MailerTemplateType.WELCOME,
+    });
 
     this.logger.info('AuthService', `New user sign up: ${params.email}`);
 
