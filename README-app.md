@@ -8,7 +8,7 @@
 4. Copy [.env.example](.env.example) to `.env` and fill in the required values
 5. Start the application with `npm start`
 6. Open your browser and navigate to `http://localhost:3000` (by default) to see the application in action
-7. Swagger API spec is available at `http://localhost:3000/swagger.json` (by default)
+7. Swagger UI spec is available at `http://localhost:3000/api-docs` (by default, enabled)
 
 ## Running Tests
 

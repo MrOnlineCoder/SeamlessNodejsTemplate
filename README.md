@@ -103,11 +103,52 @@ Utils folder shall contain project-global utility functions that can be applied 
 ### 7. Do not create many Error class types
 
 Template comes with a single `AppError` class that contains systematic code and message for the error.
-It should be thrown by the application code, and caught by the error handler middleware.
+It should be thrown by the application code, and caught by the error handler middleware:
+
+```typescript
+if (order.creatorId != user.id) {
+    throw new AppError(ErrorCode.NOT_ENOUGH_PERMISSIONS, 'Only order creator can cancel the order!');
+}
+```
 
 Do not use Java or C# approach of inventing a new error class for every possible error.
 
-Suggested approach allows easily checking if error comes from the application code or not with a single `instanceof` expression, and also allows to easily add new error codes and messages in the future, along with 1 defined error handler.
+Suggested approach allows easily checking, if error comes from the application code or not, with a single `instanceof` expression, and also allows to easily add new error codes and messages in the future, along with 1 defined error handler.
+
+### 8. Do not use auto-generated database primary keys (IDs)
+
+An ID is property of an entity, which means it must be possible to generate that value on the domain layer, where no database is present. An auto-incrementing ID requires a connection to the database to determine next value in the sequence.
+
+Use UUIDs instead. This allows:
+
+* Generating IDs independently of the database (in test environments, for example)
+* Providing initially a unique ID that can work later in distributed systems
+* Avoiding possible security issues with auto-increment IDs, like brute-forcing or estimating the number of records in the database
+
+An existing utility in [src/utils/id.ts](src/utils/id.ts) can be used for that:
+
+```typescript
+class OrderService {
+    ...
+
+
+    async createOrder(userId: string, itemId: string) {
+        const order: Order = {
+            id: makeEntityId(),
+            userId,
+            itemId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        await this.ordersRepository.createOrder(order);
+
+        return order;
+    }
+}
+```
+
+If you really need an auto incrementing number, that will be used by humans, associated with the entity, store it as a separate column and calculate it's value on the application layer.
 
 ## Selection of Dependencies
 
@@ -163,12 +204,12 @@ With it's JSONB support, you can easily store embedded data and use it as a docu
 
 Therefore, other options are not considered:
 
-* ❌ MongoDB - idea of storing raw JSONs may look appealing, but in reality, well-structured relation database will be better.
+* ❌ MongoDB - idea of storing raw JSONs may look appealing, but in reality, well-structured relational database will be better.
 * ❌ MySQL - not as good as PostgreSQL, and not as well maintained.
 
 #### ✅ [Drizzle-ORM](https://orm.drizzle.team/)
 
-This is the only ORM that worth using, period.
+This is the only ORM that is worth using, period.
 
 Aside from being created by my fellow 🇺🇦 countryman, it has:
 
@@ -184,7 +225,7 @@ Other options, in that comparison, are not worth using:
 
 * ❌ TypeORM - just look at number of issues on Github
 * ❌ Sequelize - basically as ancient, as Express
-* ❌ Prisma - too complicated
+* ❌ Prisma - too complicated and too much magic
 
 ### Test runner
 
@@ -207,6 +248,22 @@ These tools are outdated and bring some or other bloat to your codebase. A test 
 * `nodemailer` - sending emails
 * `inline-css` - inlining CSS styles in HTML templates
 * `dayjs` - date formatting and manipulation
+
+### Honorable mentions of other packages
+
+Good:
+
+* ✅ [zod](https://zod.dev/) - really great library for validation with excellent type deduction
+* ✅ [ioredis](https://github.com/redis/ioredis) - high-performant Redis client
+* ✅ [playwright](https://playwright.dev/) - modern E2E testing framework or browser automation solution
+* ✅ [gaxios](https://npmjs.com/package/gaxios), [fetch](https://npmjs.com/package/node-fetch) - HTTP client libraries
+
+Bad:
+
+* ❌ `lodash` - come on, most if it is possible with native JS, and you can just put small needed functions in `utils` folder without loading lodash.
+* ❌ `moment` - deprecated.
+* ❌ `class-validator` and any other decorator-based validation library - decorators are a bad idea, and these libraries introduce unneeded complexity and magic. Use `zod` instead
+* ❌ `passport` - see below
 
 ## FAQ and "Recipes"
 
@@ -266,12 +323,12 @@ Otherwise, prefer writing E2E tests, they provide more value for less effort. Re
 Yes, but I would not recommend it. Manually describing entities with interfaces and creating a matching database separately schema allows:
 
 * Your entities to be "crystal-clear" of any database-related stuff. They are just objects with data, nothing more.
-* Easily separate your entities definition into a package for shader usage by other projects, including frontend
-* Allows possibly extending later to rich domain model.
+* Easily separate your entities definition into a package for shared usage by other projects, including frontend
+* Allows possibly extending later to rich domain model without making it dirty
 
 ## Can I use Passport for authentication?
 
-**NO!** Passport is a huge bloat and another piece of spaghetti code. Handle your authentication yourself, it's not that hard.
+**NO!** Passport is a huge bloat and another piece of decade-old spaghetti code. Handle your authentication yourself, it's not that hard.
 Writing OAuth integrations with Google, Facebook, etc is also easy. This will save you a lot of time and headache in the future.
 
 ## How would I approach writing an API integration with external system?
@@ -313,6 +370,16 @@ class DefaultSomePaymentSystemProvider implements SomePaymentSystemProvider {
 I consider that there is no need for controllers and routes separation, as controllers shall just propagate request params from HTTP to application layer with a few lines of code. Therefore, they are joined into "routes" in this template.
 
 If your route code does something more than preparing params, calling a service and preparing the response, then you should consider refactoring your code.
+
+## I would like to add PDF rendering, any suggestions?
+
+It's sometimes appealing to use PDF libraries like `pdfkit`, and although they are great, the rapid change of business requirements or design usually leads to painful refactoring of the PDF generation code, so instead you should leverage the capability of browser engines to render HTML to PDF:
+
+1. Write your PDF as HTML template in `resources` folder
+2. Write a service that will read the template and render it with [eta](https://eta.js.org/)
+3. Use [Playwright](https://playwright.dev/) to render HTML to PDF in a headless Chromium browser
+4. Cache when needed
+5. Inject the service into your application code where PDF has to be generated
 
 ## License
 
