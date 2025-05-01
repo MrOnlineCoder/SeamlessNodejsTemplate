@@ -99,15 +99,28 @@ In this template, the configuration is loaded from `.env` files using `dotenv-sa
 ### 6. Do not pollute utils folder
 
 Utils folder shall contain project-global utility functions that can be applied in **any context**, basically treat them as *pure functions*. If something applies to specific feature or business context, it shall be placed in the feature folder.
+Otherwise, it can quickly turn into a dumpster.
 
-### 7. Do not create many Error class types
+### 7. Fail fast. Do not create many Error class types
 
 Template comes with a single `AppError` class that contains systematic code and message for the error.
-It should be thrown by the application code, and caught by the error handler middleware:
+Error code is from a fixed enum, and is designed to be used by API consumers, while descriptive message is for humans.
+
+It should be thrown by the application code as soon as possible, and it will be caught by custom [Fastify error handler](src/server.ts#L106):
 
 ```typescript
 if (order.creatorId != user.id) {
     throw new AppError(ErrorCode.NOT_ENOUGH_PERMISSIONS, 'Only order creator can cancel the order!');
+}
+```
+
+Will result in graceful HTTP 403 response:
+
+```json
+{
+    "code": "NOT_ENOUGH_PERMISSIONS",
+    "message": "Only order creator can cancel the order!",
+    "timestamp": 1746125890728,
 }
 ```
 
@@ -363,7 +376,6 @@ class DefaultSomePaymentSystemProvider implements SomePaymentSystemProvider {
 ```
 
 3. Provide the implementation to all services or other classes that depend on `SomePaymentSystemProvider` interface in [src/deps.ts](src/deps.ts) file.
-
 
 ## Why there are no controllers in this template?
 
