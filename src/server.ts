@@ -34,7 +34,7 @@ export async function startWebServer(app: ApplicationContainer) {
     origin: '*',
   });
   await server.register(fastifyRateLimit, {
-    errorResponseBuilder: (req, context) => {
+    errorResponseBuilder: () => {
       throw new AppError(
         ErrorCode.TOO_MANY_REQUESTS,
         `Too many requests, please try again later`
@@ -82,14 +82,14 @@ export async function startWebServer(app: ApplicationContainer) {
 
   registerApiSchemas(server);
 
-  server.setNotFoundHandler((request, reply) => {
+  server.setNotFoundHandler((request) => {
     throw new AppError(
       ErrorCode.NOT_FOUND,
       `Requested URL (${request.method} ${request.url}) not found`
     );
   });
 
-  server.setSchemaErrorFormatter((errors, data) => {
+  server.setSchemaErrorFormatter((errors) => {
     const error = errors[0];
 
     const fieldName = error.instancePath.substring(1);

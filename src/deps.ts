@@ -6,10 +6,7 @@ import { loadAppConfig } from './config';
 import { DBProvider } from './db/provider';
 import { ConsoleLogger } from './logger';
 import { NodeMailerProvider } from './mailer/mailerProvider';
-import {
-  EtaTemplatedMailerService,
-  MailerService,
-} from './mailer/mailerService';
+import { EtaTemplatedMailerService } from './mailer/mailerService';
 import { SqlUsersRepository } from './users/usersRepository';
 
 export function createApplicationContainer() {

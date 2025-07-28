@@ -6,7 +6,7 @@ It follows the principles of SOLID, DDD / Clean Architecture, 12 Factor Apps in 
 
 Out of the box, it provides:
 
-* TypeScript setup
+* TypeScript setup with a modern ESLint configuration
 * Ready to use folder structure
 * Fastify server with simple REST API setup
 * Swagger-UI documentation on OpenAPI 3.0

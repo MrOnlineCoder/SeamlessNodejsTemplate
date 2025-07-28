@@ -6,12 +6,15 @@
   "scripts": {
     "start": "node build/src/index.js",
     "build": "tsc",
+    "lint": "eslint --ext .ts src/",
+    "lint:fix": "eslint --ext .ts src/ --fix",
     "test": "ava build/test/**/*.test.js",
     "db:generate": "drizzle-kit generate"
   },
   "author": "Your Name Here",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.32.0",
     "@types/bcrypt": "^5.0.2",
     "@types/dotenv-safe": "^8.1.6",
     "@types/inline-css": "^3.0.3",
@@ -20,7 +23,11 @@
     "@types/pg": "^8.11.14",
     "ava": "^6.2.0",
     "drizzle-kit": "^0.31.0",
-    "typescript": "^5.8.3"
+    "eslint": "^9.32.0",
+    "globals": "^16.3.0",
+    "jiti": "^2.5.1",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

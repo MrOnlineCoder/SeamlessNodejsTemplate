@@ -1,5 +1,4 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { Logger } from '../logger';
+import { FastifyRequest } from 'fastify';
 import { UsersRepository } from '../users/usersRepository';
 import { AuthSessionStore } from './authSessionStore';
 import { AUTH_SESSION_COOKIE_NAME } from './authService';
@@ -12,7 +11,7 @@ export class AuthGuard {
   ) {}
 
   public checkAccess() {
-    return async (req: FastifyRequest, reply: FastifyReply) => {
+    return async (req: FastifyRequest) => {
       const sessionId = req.cookies[AUTH_SESSION_COOKIE_NAME];
 
       if (!sessionId) {

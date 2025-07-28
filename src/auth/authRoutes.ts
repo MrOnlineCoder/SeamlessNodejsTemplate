@@ -81,7 +81,7 @@ export function makeAuthRoutes(
           },
         },
       },
-      async (req, reply) => {
+      async (req) => {
         return toPublicUser(req.user!);
       }
     );
@@ -155,7 +155,7 @@ export function makeAuthRoutes(
           },
         },
       },
-      async (req, reply) => {
+      async (req) => {
         await app.authService.signup(req.body);
 
         return {
