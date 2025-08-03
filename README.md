@@ -267,7 +267,8 @@ These tools are outdated and bring some or other bloat to your codebase. A test 
 Good:
 
 * ✅ [zod](https://zod.dev/) - really great library for validation with excellent type deduction
-* ✅ [ioredis](https://github.com/redis/ioredis) - high-performant Redis client
+* ⚠️ [ioredis](https://github.com/redis/ioredis) - high-performant Redis client, now in maintenance mode, but still widely used.
+* ✅ [node-redis](https://github.com/redis/node-redis) - modern Redis client, rewritten from scratch. Use instead of `ioredis` for new projects.
 * ✅ [playwright](https://playwright.dev/) - modern E2E testing framework or browser automation solution
 * ✅ [gaxios](https://npmjs.com/package/gaxios), [fetch](https://npmjs.com/package/node-fetch) - HTTP client libraries
 
