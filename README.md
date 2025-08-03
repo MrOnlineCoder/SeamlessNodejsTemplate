@@ -163,6 +163,16 @@ class OrderService {
 
 If you really need an auto incrementing number, that will be used by humans, associated with the entity, store it as a separate column and calculate it's value on the application layer.
 
+### 9. Do not write business logic in the database
+
+Your business logic is implemented in domain and application services, which allows it to be easily tested, tracked by a version control system, and reused in different contexts (e.g. CLI, HTTP, etc.).
+
+Do **not** write business logic in the database! This includes stored procedures, triggers, functions, etc. That logic is hard to test, track, maintain, migrate and reuse. Such thing is suitable for legacy or very specific cases.
+
+Database is primarily a storage of data, allowing efficient access to it.
+
+Note regarding database constraints (`NOT NULL`, `UNIQUE`, foreign keys, etc.): they should be used when possible to ensure data integrity on the database level, but never should be used as a sole or primary source of truth - the same checks must be implemented in the application code as well on all layers (HTTP API schema validations, application services, etc.), with appropriate error handling in accordance to business requirements. They act as a last line of defense against data corruption, if such check was not implemented correctly or missed at all, or if somebody decided to access the database directly, bypassing the application code.
+
 ## Selection of Dependencies
 
 Node.js ecosystem develops and grows very rapidly, one things replace another, and unfortunately, for many problems there are still no "perfect" or at least "very good" solutions, that is applicable for other languages and platforms like Java, C#, etc.
