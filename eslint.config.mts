@@ -13,7 +13,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   {
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
+      //add your custom rules here
     },
   },
 ]);

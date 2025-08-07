@@ -173,6 +173,20 @@ Database is primarily a storage of data, allowing efficient access to it.
 
 Note regarding database constraints (`NOT NULL`, `UNIQUE`, foreign keys, etc.): they should be used when possible to ensure data integrity on the database level, but never should be used as a sole or primary source of truth - the same checks must be implemented in the application code as well on all layers (HTTP API schema validations, application services, etc.), with appropriate error handling in accordance to business requirements. They act as a last line of defense against data corruption, if such check was not implemented correctly or missed at all, or if somebody decided to access the database directly, bypassing the application code.
 
+### 10. Do not use Typescript 'any' type
+
+Using `any` type is tempting, but very often it leads to losing type safety at all, which Typescript tries to provide in the first place. Each `any` left in a code is a possible bug in the future that is undetected at compile time, especially when contracts, APIs or versions of modules and libraries change.
+
+For that reason explicit usage of `any` is not allowed in linter rules. Instead, prefer to:
+
+- actually defining a certain type which possible in 99% of cases
+
+- use `unknown` when any type can be provided to a function
+
+Do not forget to use `Record<K,V>` as well to describe shapes of objects, instead of using `any` or `object` types.
+
+If `any` is absolutely necessary, use `@ts-ignore` comment to suppress the error, but do this very carefully and with enough justification.
+
 ## Selection of Dependencies
 
 Node.js ecosystem develops and grows very rapidly, one things replace another, and unfortunately, for many problems there are still no "perfect" or at least "very good" solutions, that is applicable for other languages and platforms like Java, C#, etc.

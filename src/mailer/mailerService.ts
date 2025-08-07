@@ -11,11 +11,13 @@ export enum MailerTemplateType {
   WELCOME = 'welcome',
 }
 
+type MailerPayloadAllowedTypes = string | number | boolean;
+
 export interface SendTemplateMailOptions {
   to: string;
   type: MailerTemplateType;
   subject: string;
-  payload: Record<string, any>;
+  payload: Record<string, MailerPayloadAllowedTypes>;
 }
 
 export interface MailerService {
