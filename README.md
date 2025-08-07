@@ -15,6 +15,7 @@ Out of the box, it provides:
 * Simple authentication with in-memory sessions
 * Safe config loading from .env files
 * Ready to use simple mail sending with HTML templates, HTTP request service, and more
+* Prepared 2-stage Dockerfile
 
 Aside from just being a template with `package.json` and some code, it also comes with a set of principles and philosophy.
 
