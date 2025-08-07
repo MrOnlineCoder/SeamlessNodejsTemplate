@@ -14,7 +14,7 @@ Out of the box, it provides:
 * Test environment with Ava runner
 * Simple authentication with in-memory sessions
 * Safe config loading from .env files
-* Ready to use simple mail sending with HTML templates
+* Ready to use simple mail sending with HTML templates, HTTP request service, and more
 
 Aside from just being a template with `package.json` and some code, it also comes with a set of principles and philosophy.
 
@@ -179,7 +179,7 @@ Using `any` type is tempting, but very often it leads to losing type safety at a
 
 For that reason explicit usage of `any` is not allowed in linter rules. Instead, prefer to:
 
-- actually defining a certain type which possible in 99% of cases
+- actually defining a certain type which is possible in 99% of cases
 
 - use `unknown` when any type can be provided to a function
 

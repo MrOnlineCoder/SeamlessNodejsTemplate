@@ -4,6 +4,7 @@ import { AuthService } from './auth/authService';
 import { InMemoryAuthSessionStore } from './auth/authSessionStore';
 import { loadAppConfig } from './config';
 import { DBProvider } from './db/provider';
+import { HttpProvider } from './httpProvider';
 import { ConsoleLogger } from './logger';
 import { NodeMailerProvider } from './mailer/mailerProvider';
 import { EtaTemplatedMailerService } from './mailer/mailerService';
@@ -15,6 +16,7 @@ export function createApplicationContainer() {
 
   const dbProvider = new DBProvider(config);
   const mailerProvider = new NodeMailerProvider(config, logger);
+  const httpProvider = new HttpProvider(logger);
 
   const usersRepository = new SqlUsersRepository(dbProvider);
 
@@ -45,6 +47,7 @@ export function createApplicationContainer() {
     authSessionStore,
     authService,
     authGuard,
+    httpProvider,
   };
 }
 
