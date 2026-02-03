@@ -37,7 +37,7 @@ export async function startWebServer(app: ApplicationContainer) {
     errorResponseBuilder: () => {
       throw new AppError(
         ErrorCode.TOO_MANY_REQUESTS,
-        `Too many requests, please try again later`
+        `Too many requests, please try again later`,
       );
     },
   });
@@ -85,7 +85,7 @@ export async function startWebServer(app: ApplicationContainer) {
   server.setNotFoundHandler((request) => {
     throw new AppError(
       ErrorCode.NOT_FOUND,
-      `Requested URL (${request.method} ${request.url}) not found`
+      `Requested URL (${request.method} ${request.url}) not found`,
     );
   });
 
@@ -98,7 +98,7 @@ export async function startWebServer(app: ApplicationContainer) {
       ErrorCode.VALIDATION_ERROR,
       error.message
         ? `Field '${fieldName}' is invalid: ${error.message}`
-        : `Field '${fieldName}' is invalid`
+        : `Field '${fieldName}' is invalid`,
     );
   });
 
@@ -113,7 +113,7 @@ export async function startWebServer(app: ApplicationContainer) {
       app.logger.error(
         'Server',
         `Unknown error at ${request.method} ${request.url}:`,
-        error
+        error,
       );
 
       reply.status(500).send({
@@ -139,7 +139,7 @@ export async function startWebServer(app: ApplicationContainer) {
         },
       },
     },
-    () => ({ alive: true })
+    () => ({ alive: true }),
   );
 
   await server.register(makeAuthRoutes(app), {
@@ -156,7 +156,7 @@ export async function startWebServer(app: ApplicationContainer) {
   if (app.config.swaggerUi) {
     app.logger.info(
       'Server',
-      `Swagger UI available at http://localhost:${app.config.port}/api-docs`
+      `Swagger UI available at http://localhost:${app.config.port}/api-docs`,
     );
   }
 }

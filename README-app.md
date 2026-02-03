@@ -10,6 +10,8 @@
 6. Open your browser and navigate to `http://localhost:3000` (by default) to see the application in action
 7. Swagger UI spec is available at `http://localhost:3000/api-docs` (by default, enabled)
 
+You may start application in watch (dev) mode using `npm run dev`.
+
 ## Running Tests
 
 ```bash

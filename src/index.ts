@@ -14,6 +14,16 @@ process.on('uncaughtException', (error) => {
 async function run() {
   const app = createApplicationContainer();
 
+  const gracefulShutdown = () => {
+    //disconnect from DB, redis if needed
+
+    app.logger.info('Index', 'Shutdown signal received');
+    process.exit(0);
+  };
+
+  process.on('SIGINT', gracefulShutdown);
+  process.on('SIGTERM', gracefulShutdown);
+
   await startWebServer(app);
 }
 

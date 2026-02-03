@@ -7,7 +7,7 @@ export class DBProvider {
   private db;
   private pool: Pool;
 
-  constructor(private readonly config: AppConfig) {
+  constructor(config: AppConfig) {
     this.pool = new Pool({
       connectionString: config.dbUrl,
     });
