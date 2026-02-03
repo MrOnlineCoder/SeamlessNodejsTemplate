@@ -23,8 +23,8 @@ Aside from just being a template with `package.json` and some code, it also come
 
 Prerequisites:
 
-* Node.js
-* PostgreSQL
+* Node.js 24+
+* PostgreSQL 15+
 
 Creating own application from this template:
 
