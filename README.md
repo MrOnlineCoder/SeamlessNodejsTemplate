@@ -219,6 +219,8 @@ Express, although being one of the "founding fathers" of Node.js, should never b
 * It's not well maintained anymore
 * It's usage propagates bad practices, like using middleware for everything or request object pollution
 
+_Update as of February 2026_: newer version of Express, v5, introduces code factoring and tries address some of these features, but unfortunately I still do no consider that enough to recommend it for newer projects - Fastify outmatches it on most features.
+
 #### ❌ [NestJS](https://nestjs.com/)
 
 Nest.js is kinda of a big deal in the community, but to be honest, I don't see any real profit from it, as Nest.js by itself is **just a fancy Inversion of Control / Dependency Injection** container in it's core with additional features built on top of it in it's ecosystem. Not only implementing DI can be done
