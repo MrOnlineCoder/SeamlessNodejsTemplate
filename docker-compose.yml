@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-project-app
+    depends_on:
+      - db
+      - redis
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://postgres:postgres@db:5432/my_project
+      REDIS_URL: redis://redis:6379
+      # Add other environment variables as needed
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - devnet
+
+  db:
+    image: postgres:15
+    container_name: my-project-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: my_project
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - devnet
+
+  redis:
+    image: redis:7
+    container_name: my-project-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - devnet
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  devnet:
+    driver: bridge
