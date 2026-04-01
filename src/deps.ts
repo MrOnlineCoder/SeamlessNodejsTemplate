@@ -26,7 +26,7 @@ export function createApplicationContainer() {
   const mailerService = new EtaTemplatedMailerService(
     mailerProvider,
     logger,
-    config
+    config,
   );
 
   const authService = new AuthService(
@@ -34,7 +34,7 @@ export function createApplicationContainer() {
     authSessionStore,
     usersRepository,
     mailerService,
-    logger
+    logger,
   );
   const authGuard = new AuthGuard(authSessionStore, usersRepository);
 
